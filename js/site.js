@@ -1,30 +1,18 @@
 /*
-** 04-14-21 jdj: 
-**
-**
-**
-**
-**
-**
-**
-**
-**
-**
-**
-**
-**
-**
-**
-**
-**
-**
-**
-*/
+ ** 04-14-21 jdj: Fizz Buzz Game:
+ **              .take two input numbers and build a return table array displaying all numbers within the range.
+ **              .Identify which number(s) are divisible by 3, 5 or both and display Fizz, Buzz, FizzBuzz respectively.
+ **              .In addition allow the user to enter two alternate numbers other than 3 or 5 and use those variables
+ **               to determine Fizz, Buzz or FizzBuzz.
+ **              .HTML hook
+ **             "document.getElementById("submitBtn").addEventListener("click", fz_FizzBuzzTableArray);"
+ **
+ **      Logic:  .Grab the input range numbers to build the integer array.
+ **              .add reasonable and limits on what the user can enter.see userInputBad()
+ **              .take the number and build the array.getRange()
+ **              .Parse the array to identify numbers divisible by the modulo values. DisplayData()
+ */
 
-
-
-
-// math with numbers from the form.
 function fz_FizzBuzzTableArray() {
 
 
@@ -32,13 +20,62 @@ function fz_FizzBuzzTableArray() {
     let startNum = parseInt(document.getElementById("numOne").value);
     let endNum = parseInt(document.getElementById("numTwo").value);
 
+    let outputMsg = document.getElementById("FizzBuzzNotes"); // get the message field object once 
+    outputMsg.innerText = "";
+
+    if (userInputBad(startNum, endNum, outputMsg) == true) {
+        return;
+    }
+
+
     let numbers = getRange(startNum, endNum);
     displayData(numbers);
 
+    outputMsg.classList.add("noteBuzzOk");
+    outputMsg.innerText = "Success !";
 }
 
 
-// gets range of numbers
+/*
+ ** Function to control basic error handling.
+ ** .don't allow negative range numbers.  Don't care about the mods
+ ** .make sure they're a valid range.
+ ** .limit the table range to 1000
+ ** .for display reasons don't allow the start number past 1million
+ */
+function userInputBad(startNum, endNum, outputMsg) {
+
+    if (startNum < 0 || endNum < 0) {
+        outputMsg.classList.add("noteBuzzErr");
+        outputMsg.innerText = "Please try using positive numbers for the table range.";
+        return true;
+    }
+
+    if (startNum >= endNum) {
+        outputMsg.classList.add("noteBuzzErr");
+        outputMsg.innerText = "Please ensure the start value is less than the end value.";
+        return true;
+    }
+
+    if ((endNum - startNum) > 1000) {
+        outputMsg.classList.add("noteBuzzErr");
+        outputMsg.innerText = "Please try to keep the range under 1,000.";
+        return true;
+    }
+
+    if (startNum > 999999999) {
+        outputMsg.classList.add("noteBuzzErr");
+        outputMsg.innerText = "Please keep the number values under 1 million.";
+        return true;
+    }
+
+    return false;
+}
+// end of userInputBad()
+
+/*
+ ** Build and return an array of numbers from user's range.
+ */
 function getRange(start, end) {
     let numberArray = [];
 
@@ -49,26 +86,27 @@ function getRange(start, end) {
     }
 
     return numberArray;
-} // end of getRange()
+}
+// end of getRange()
 
-// display the numbers on the page
-// have a repeating template where we don't know how many rows or columns
-// we will derive, from the html template, the total columns.
 
 /*
- ** when the teamplate is returned the tr,td is returned as a string.
- ** you have to parse and count each 
- ** clonenode(true) turns into a document and you can use query selectors on it.
- ** (true) returns the whole template (tr,tds) where (false) only returns the single tr.
- ** importnode can get data NOT on the CURRENT doument.
- ** clonenode is the current document.
- ** comes back as an array where you can use the .length property for the count.
- ** <td> </td>  
- ** <td> </td>  
- ** <td> </td>  
- ** <td> </td>  
- ** <td> </td>  
+ ** .display the numbers on the page
+ ** .have a repeating template where we don 't know how many rows or columns
+ ** .we will derive, from the html template, the total columns.
  **
+ ** .when the teamplate is returned the tr,td is returned as a string.
+ ** .you have to parse and count each 
+ ** .clonenode(true) turns into a document and you can use query selectors on it.
+ ** .(true) returns the whole template (tr,tds) where (false) only returns the single tr.
+ ** .importnode can get data NOT on the CURRENT doument.
+ ** .clonenode is the current document.
+ ** .comes back as an array where you can use the .length property for the count.
+ **     <td> </td>  
+ **     <td> </td>  
+ **     <td> </td>  
+ **     <td> </td>  
+ **     <td> </td>  
  */
 function displayData(numberArray) {
     const rowTemplate = document.getElementById("FB-Data-Template"); // gets the <tr rows> and <td columns> from the html id= tage
@@ -77,7 +115,6 @@ function displayData(numberArray) {
     let modFizz = parseInt(document.getElementById("modFizz").value);
     let modBuzz = parseInt(document.getElementById("modBuzz").value);
     let cssFBStyle = "";
-
 
 
     resultsBody.innerHTML = ""; // clears table after every event
@@ -124,5 +161,5 @@ function displayData(numberArray) {
          */
         resultsBody.appendChild(dataRow); // commits back to the page for each row and column 
     }
-
-} // end of displayData()
+}
+// end of displayData()
