@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>AppSkel2</title>
+  <title>Fizz Buzz</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -146,20 +146,15 @@
   <!--   -->
   <!--   -->
 
-  <!-- hides from the browser's view and won't render on the page -->
-  <!-- multiple rows below will be shoved above -->
-  <template id="Data-Template">
+  <!-- templates are hidden from the browser's view and won't render on the page -->
+  <!-- template below shows 5 columns.  js in site.js will derive the total columns from the template -->
+  <template id="FB-Data-Template">
     <tr>
-      <td id="col1"></td>
-      <td id="col2"></td>
-      <td id="col3"></td>
-      <td id="col4"></td>
-      <td id="col5"></td>
-      <td id="col6"></td>
-      <td id="col7"></td>
-      <td id="col8"></td>
-      <td id="col9"></td>
-      <td id="col10"></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
   </template>
 
@@ -189,7 +184,7 @@
 -->
 
   <script>
-    document.getElementById("submitBtn").addEventListener("click", printNumbers);
+    document.getElementById("submitBtn").addEventListener("click", fz_FizzBuzzTableArray);
   </script>
 
 
