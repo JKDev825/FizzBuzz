@@ -1,3 +1,29 @@
+/*
+** 04-14-21 jdj: 
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+*/
+
+
+
+
 // math with numbers from the form.
 function fz_FizzBuzzTableArray() {
 
@@ -48,6 +74,11 @@ function displayData(numberArray) {
     const rowTemplate = document.getElementById("FB-Data-Template"); // gets the <tr rows> and <td columns> from the html id= tage
     const resultsBody = document.getElementById("resultsBody"); // is the area where the table will be displayed
     let colCount = rowTemplate.content.cloneNode(true).querySelectorAll("td").length;
+    let modFizz = parseInt(document.getElementById("modFizz").value);
+    let modBuzz = parseInt(document.getElementById("modBuzz").value);
+    let cssFBStyle = "";
+
+
 
     resultsBody.innerHTML = ""; // clears table after every event
 
@@ -59,15 +90,32 @@ function displayData(numberArray) {
 
         // loop over the columns.
         for (let colIndex = 0; colIndex < cols.length; colIndex++) {
+
+            cssFBStyle = ""; // re-initialize each iteration, cell
             let value = numberArray[i + colIndex]; // error checking for when there are no more numbers in the array
+
             if (typeof value === "undefined") { // check for out of bounds on the array
                 value = ""; // will write an empty string as were out numbers for the current row.
-            } else if (value % 2 == 0) {
+            } else if (value % modFizz == 0 && value % modBuzz == 0) {
+                value = "FizzBuzz";
+                cssFBStyle = "boldFizzBuzz";
+            } else if (value % modFizz == 0) {
                 // check for even value and make bold using the modulas operator: divisble by two.
-                cols[colIndex].classList.add("boldIt"); // cols is the actual td row with properties so classlist has all the styles.
-            }
-            cols[colIndex].textContent = value; // textcontent is the areaa between the <td>textcontent</td>
+                //      cols[colIndex].classList.add("boldIt"); // cols is the actual td row with properties so classlist has all the styles.
+                value = "Fizz";
+                cssFBStyle = "boldFizz";
 
+            } else if (value % modBuzz == 0) {
+                // check for even value and make bold using the modulas operator: divisble by two.
+                //   cols[colIndex].classList.add("boldIt"); // cols is the actual td row with properties so classlist has all the styles.
+                value = "Buzz";
+                cssFBStyle = "boldBuzz";
+            }
+
+            cols[colIndex].textContent = value; // textcontent is the areaa between the <td>textcontent</td>
+            if (cssFBStyle != "") {
+                cols[colIndex].classList.add(cssFBStyle); // cols is the actual td row with properties so classlist has all the styles.
+            }
         }
 
         /*
