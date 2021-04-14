@@ -45,12 +45,17 @@ function fz_FizzBuzzTableArray() {
  */
 function userInputBad(startNum, endNum, outputMsg) {
 
+
+    // clear any previous values set.  Seems to max out and retain the last style on subsequent .add calls.
+    outputMsg.classList.remove("noteBuzzErr");
+    outputMsg.classList.remove("noteBuzzOk");
+/*
     if (startNum < 0 || endNum < 0) {
         outputMsg.classList.add("noteBuzzErr");
         outputMsg.innerText = "Please try using positive numbers for the table range.";
         return true;
     }
-
+*/
     if (startNum >= endNum) {
         outputMsg.classList.add("noteBuzzErr");
         outputMsg.innerText = "Please ensure the start value is less than the end value.";
@@ -161,5 +166,8 @@ function displayData(numberArray) {
          */
         resultsBody.appendChild(dataRow); // commits back to the page for each row and column 
     }
-}
-// end of displayData()
+} // end of displayData()
+
+/*
+ ** end of site.js
+ */

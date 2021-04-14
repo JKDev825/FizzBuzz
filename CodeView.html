@@ -50,7 +50,7 @@
             <a class="nav-link" href="CodeGet.html">Code Grab</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="index.html">Portfolio</a> <!-- will return to portfolio when merged -->
+            <a class="nav-link" href="https://jkdev825.netlify.app/" target="_blank">Portfolio</a>
           </li>
         </ul>
       </div>
@@ -61,7 +61,7 @@
     <div class="container hero">
       <div>
         <br>
-        <h1 style="color:white">App Skel2</h1>
+        <h1>Fizz Buzz Game</h1>
         <!--    <h4 style="color:white">Reverse String Excercise</h4> -->
       </div>
     </div>
@@ -76,14 +76,13 @@
         <!--        <div class="col mt-1 border border-dark rounded shadow-lg"> -->
         <div class="col mt-1 rounded shadow-lg">
           <h2 class="text-center">JavaScript Code Review</h2>
-          <h6> <b>The exercise requires the use of JavaScript to parse the string as an array directly instead of
-              leveraging
-              available methods from other library source code. It was written to illustrate an understanding of simple
-              arrays. The requirements included basic validation of the passed string. Normalize the string by removing
-              non-alphanumeric characters. Reverse a copy of the string and test if the results are the same
-              (palindrome). Lastly,
-              provide an
-              appropriate update for the user. I welcome any questions you may have regarding the source code below.
+          <h6> <b>The application leverages an HTML template tag to define a table layout and dynamically populate its
+              contents using JavaScript. Instead of static column ids the column counts are derived from JavaScript.
+              This
+              allows flexibility within the site where columns only need to be defined within the HTML withough having
+              to adjust the JavaScript. The exercise also involves utilizing nested for loops to obtain table rows based
+              on the number range then looping through each row in order to populate individual table cells by column. I
+              welcome any questions you may have regarding the source code below.
             </b></h6>
           <h5 class="text-md-center"><b>The full application was written using HTML, JavaScript, jQuery, CSS, and
               Bootstrap v4.
@@ -102,112 +101,173 @@
       <div class="row">
         <div class="col-12 line-numbers">
           <pre><code class="language-javascript">/*
- ** 04-13-21 jdj: Taco Cat Reverse String Function.  File: /js/site.js
- **              .Need to check and alert the user if this is a palindrome (same value if reversed)
- **              .requirements are to remove all non - alpha characters. see normalizeString() below.
- **              .HTML hook:
- **              "<script> document.getElementById(" tacoBtn ").addEventListener(" click ", tc_reverseString);" </script>
+ ** 04-14-21 jdj: Fizz Buzz Game:
+ **              .take two input numbers and build a return table array displaying all numbers within the range.
+ **              .Identify which number(s) are divisible by 3, 5 or both and display Fizz, Buzz, FizzBuzz respectively.
+ **              .In addition allow the user to enter two alternate numbers other than 3 or 5 and use those variables
+ **               to determine Fizz, Buzz or FizzBuzz.
+ **              .HTML hook
+ **             "document.getElementById("submitBtn").addEventListener("click", fz_FizzBuzzTableArray);"
  **
- **      Logic: .make a copy of the passed string.
- **              .normalize the 1st copy witOUT reversing it.
- **              .make a second copy of the passed string; normalize then reverse it: see reverseString()
- **              .compare the 1st and 2nd string copies.  Set a user message if they're the same.
- **              .use the originally passed string to also reverse it and echo back to the user if successful including non-alpha.
- **
- **      Note:   .Careful for the differences between use of the document object's .innerText vs .innerHTML.
- **              .innterHTML was used in some cases to provide return HTML to add element highlighting depending
- **               on the message.
+ **      Logic:  .Grab the input range numbers to build the integer array.
+ **              .add reasonable and limits on what the user can enter.see userInputBad()
+ **              .take the number and build the array.getRange()
+ **              .Parse the array to identify numbers divisible by the modulo values. DisplayData()
  */
-function tc_reverseString() {
 
-    let userWord = document.getElementById("tacoCat").value; // get the user input
-    let output = document.getElementById("tacoOutput"); // get output field object once.
-    let outputMsg = document.getElementById("tacoMsg"); // get the message field object once 
-    let reverseWord = "";
+function fz_FizzBuzzTableArray() {
 
-    // reinitialize the output fields from any previous displays.
-    output.innerText = "";
+
+    //  alert("here: 2nd .js")
+    let startNum = parseInt(document.getElementById("numOne").value);
+    let endNum = parseInt(document.getElementById("numTwo").value);
+
+    let outputMsg = document.getElementById("FizzBuzzNotes"); // get the message field object once 
     outputMsg.innerText = "";
 
-    let copyStr1NormalizedOnly = userWord; // copy the original word as-is
-
-
-    // check something is there and alert them if empty.
-    if (copyStr1NormalizedOnly == "") {
-        outputMsg.innerHTML = `<span class="text-danger"><b>Please enter some text.</b></span>`;
+    if (userInputBad(startNum, endNum, outputMsg) == true) {
         return;
     }
 
-    // validate at least 2 characters were received.
-    if (userWord.length < 2) {
-        outputMsg.innerHTML = `<span class="text-danger"><b>Please enter at least 2 characters.</b></span>`;
-        return;
-    }
 
-    let copystr2NormalizedReversed = userWord;
+    let numbers = getRange(startNum, endNum);
+    displayData(numbers);
 
-    copyStr1NormalizedOnly = normalizeString(userWord);
-
-    copystr2NormalizedReversed = normalizeString(userWord);
-    copystr2NormalizedReversed = reverseStringCopy(copystr2NormalizedReversed);
-
-
-    /*
-     ** If the text is a palindrome inject html in the return message to highlight the error.
-     */
-    if (copyStr1NormalizedOnly == copystr2NormalizedReversed) {
-        output.innerHTML = `<span class="bg-danger"><b>I'm afraid [${userWord}] is a palindrome when reversed.</b></span>`;
-        outputMsg.innerText = `Internally your word is the same forward[${copyStr1NormalizedOnly}] as it is reversed[${copystr2NormalizedReversed}]`;
-        return;
-    }
-
-    // reverse the original untouched value as it passed the palindrome test.
-    reverseWord = reverseStringCopy(userWord);
-    output.innerText = reverseWord;
-    outputMsg.innerHTML = `<span class="bg-success"><b>You're word passed the palindrome review and was reversed.</b></span>`;
-
-    return;
-} // end of reverseString() called from the browser.
-
-// do nothing more than to reverse the passed string.
-function reverseStringCopy(passedString) {
-    let returnString = "";
-
-    for (x = passedString.length - 1; x >= 0; x--) {
-        returnString = returnString + passedString[x];
-    }
-    return returnString;
+    outputMsg.classList.add("noteBuzzOk");
+    outputMsg.innerText = "Success !";
 }
 
-// remove all non alpha characters from the string and only leave 'A-Z' and '0-9'.  return string will be all CAPS !!!
-// white space and punctuation will be removed.
-function normalizeString(passedString) {
-    let tmpWorkString = "";
-    let returnString = "";
-    let lenStr = 0;
 
-    tmpWorkString = passedString;
-    tmpWorkString = tmpWorkString.toUpperCase();
-    lenStr = tmpWorkString.length;
-
-    for (let x = 0; x < lenStr; x++) {
-        if (tmpWorkString[x] >= 'A' && tmpWorkString[x] <= 'Z') {
-            returnString = returnString + tmpWorkString[x];
-            continue;
-        }
-        if (tmpWorkString[x] >= '0' && tmpWorkString[x] <= '9') {
-            returnString = returnString + tmpWorkString[x];
-            continue;
-        }
-        continue; // here for clarity; skip the character
-    }
-
-    return returnString;
-}
 /*
-**  End of site.js
-*/
-</code></pre>
+ ** Function to control basic error handling.
+ ** .don't allow negative range numbers.  Don't care about the mods
+ ** .make sure they're a valid range.
+ ** .limit the table range to 1000
+ ** .for display reasons don't allow the start number past 1million
+ */
+function userInputBad(startNum, endNum, outputMsg) {
+
+
+    // clear any previous values set.  Seems to max out and retain the last style on subsequent .add calls.
+    outputMsg.classList.remove("noteBuzzErr");
+    outputMsg.classList.remove("noteBuzzOk");
+
+    if (startNum < 0 || endNum < 0) {
+        outputMsg.classList.add("noteBuzzErr");
+        outputMsg.innerText = "Please try using positive numbers for the table range.";
+        return true;
+    }
+
+    if (startNum >= endNum) {
+        outputMsg.classList.add("noteBuzzErr");
+        outputMsg.innerText = "Please ensure the start value is less than the end value.";
+        return true;
+    }
+
+    if ((endNum - startNum) > 1000) {
+        outputMsg.classList.add("noteBuzzErr");
+        outputMsg.innerText = "Please try to keep the range under 1,000.";
+        return true;
+    }
+
+    if (startNum > 999999999) {
+        outputMsg.classList.add("noteBuzzErr");
+        outputMsg.innerText = "Please keep the number values under 1 million.";
+        return true;
+    }
+
+    return false;
+}
+// end of userInputBad()
+
+/*
+ ** Build and return an array of numbers from user's range.
+ */
+function getRange(start, end) {
+    let numberArray = [];
+
+    for (let index = start; index <= end; index++) {
+        //fizzbuzz logic will be added here
+
+        numberArray.push(index);
+    }
+
+    return numberArray;
+}
+// end of getRange()
+
+
+/*
+ ** .display the numbers on the page
+ ** .have a repeating template where we don 't know how many rows or columns
+ ** .we will derive, from the html template, the total columns.
+ **
+ ** .when the teamplate is returned the tr,td is returned as a string.
+ ** .you have to parse and count each 
+ ** .clonenode(true) turns into a document and you can use query selectors on it.
+ ** .(true) returns the whole template (tr,tds) where (false) only returns the single tr.
+ ** .importnode can get data NOT on the CURRENT doument.
+ ** .clonenode is the current document.
+ ** .comes back as an array where you can use the .length property for the count.
+  */
+function displayData(numberArray) {
+    const rowTemplate = document.getElementById("FB-Data-Template"); // gets the <tr rows> and <td columns> from the html id= tage
+    const resultsBody = document.getElementById("resultsBody"); // is the area where the table will be displayed
+    let colCount = rowTemplate.content.cloneNode(true).querySelectorAll("td").length;
+    let modFizz = parseInt(document.getElementById("modFizz").value);
+    let modBuzz = parseInt(document.getElementById("modBuzz").value);
+    let cssFBStyle = "";
+
+
+    resultsBody.innerHTML = ""; // clears table after every event
+
+    // loop over the array and the write the value to a page.
+    for (let i = 0; i < numberArray.length; i += colCount) {
+        let dataRow = rowTemplate.content.cloneNode(true); // get the tr and multiple td
+
+        let cols = dataRow.querySelectorAll("td"); // gets the array of td columns
+
+        // loop over the columns.
+        for (let colIndex = 0; colIndex < cols.length; colIndex++) {
+
+            cssFBStyle = ""; // re-initialize each iteration, cell
+            let value = numberArray[i + colIndex]; // error checking for when there are no more numbers in the array
+
+            if (typeof value === "undefined") { // check for out of bounds on the array
+                value = ""; // will write an empty string as were out numbers for the current row.
+            } else if (value % modFizz == 0 && value % modBuzz == 0) {
+                value = "FizzBuzz";
+                cssFBStyle = "boldFizzBuzz";
+            } else if (value % modFizz == 0) {
+                // check for even value and make bold using the modulas operator: divisble by two.
+                //      cols[colIndex].classList.add("boldIt"); // cols is the actual td row with properties so classlist has all the styles.
+                value = "Fizz";
+                cssFBStyle = "boldFizz";
+
+            } else if (value % modBuzz == 0) {
+                // check for even value and make bold using the modulas operator: divisble by two.
+                //   cols[colIndex].classList.add("boldIt"); // cols is the actual td row with properties so classlist has all the styles.
+                value = "Buzz";
+                cssFBStyle = "boldBuzz";
+            }
+
+            cols[colIndex].textContent = value; // textcontent is the areaa between the <td>textcontent</td>
+            if (cssFBStyle != "") {
+                cols[colIndex].classList.add(cssFBStyle); // cols is the actual td row with properties so classlist has all the styles.
+            }
+        }
+
+        /*
+         ** commits back to the page for each row and column
+         ** and will be <tr> <td> <td> <td> <td> .etc
+         */
+        resultsBody.appendChild(dataRow); // commits back to the page for each row and column 
+    }
+} // end of displayData()
+
+/*
+ ** end of site.js
+ */</code></pre>
         </div>
       </div>
     </div>
