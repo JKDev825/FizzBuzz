@@ -49,13 +49,13 @@ function userInputBad(startNum, endNum, outputMsg) {
     // clear any previous values set.  Seems to max out and retain the last style on subsequent .add calls.
     outputMsg.classList.remove("noteBuzzErr");
     outputMsg.classList.remove("noteBuzzOk");
-/*
-    if (startNum < 0 || endNum < 0) {
-        outputMsg.classList.add("noteBuzzErr");
-        outputMsg.innerText = "Please try using positive numbers for the table range.";
-        return true;
-    }
-*/
+    /*
+        if (startNum < 0 || endNum < 0) {
+            outputMsg.classList.add("noteBuzzErr");
+            outputMsg.innerText = "Please try using positive numbers for the table range.";
+            return true;
+        }
+    */
     if (startNum >= endNum) {
         outputMsg.classList.add("noteBuzzErr");
         outputMsg.innerText = "Please ensure the start value is less than the end value.";
@@ -139,18 +139,18 @@ function displayData(numberArray) {
             if (typeof value === "undefined") { // check for out of bounds on the array
                 value = ""; // will write an empty string as were out numbers for the current row.
             } else if (value % modFizz == 0 && value % modBuzz == 0) {
-                value = "FizzBuzz";
+                value = `${value} FizzBuzz`;
                 cssFBStyle = "boldFizzBuzz";
             } else if (value % modFizz == 0) {
                 // check for even value and make bold using the modulas operator: divisble by two.
                 //      cols[colIndex].classList.add("boldIt"); // cols is the actual td row with properties so classlist has all the styles.
-                value = "Fizz";
+                value = `${value} Fizz`;
                 cssFBStyle = "boldFizz";
 
             } else if (value % modBuzz == 0) {
                 // check for even value and make bold using the modulas operator: divisble by two.
                 //   cols[colIndex].classList.add("boldIt"); // cols is the actual td row with properties so classlist has all the styles.
-                value = "Buzz";
+                value = `${value} Buzz`;
                 cssFBStyle = "boldBuzz";
             }
 

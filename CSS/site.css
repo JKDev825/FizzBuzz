@@ -193,14 +193,14 @@ code {
 .boldFizz {
   font-weight: bolder;
   color: rgb(27, 112, 39);
-  font-size: small;
+  font-size: medium;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 .boldBuzz {
   font-weight: bolder;
   color: rgb(84, 22, 90);
-  font-size: small;
+  font-size: medium;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
