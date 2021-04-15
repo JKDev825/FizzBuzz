@@ -223,3 +223,8 @@ code {
   color: rgb(35, 110, 51);
   font-size: medium;
 }
+
+hr {
+  border: 2px solid #014474;
+  border-radius: 2px;
+}
